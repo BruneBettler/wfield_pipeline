@@ -100,3 +100,7 @@ def _register_multichannel_stack(frames, templates, mode='2d', niter = 25, eps0 
             rot[:,ichan] = rots
         stack[:,ichan,:,:] = np.stack([r[1] for r in res])
     return (xs,ys,rot), stack
+
+def denoise():
+    #TODO
+    return
