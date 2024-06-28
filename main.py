@@ -1,16 +1,18 @@
 '''
 Written by Brune
-Last Edit: Monday June 03 2024
+Last Edit: June 28 2024
+
 '''
 
 from data_preprocessor import rawDataPreprocessor
 from utils import get_recording_paths
+import datetime
 
 '''
 FILL OUT PARAMS DICTIONARY WITH DESIRED PREPROCESSING CHOICES
 '''
 params = {
-    'path_to_session_data':       '/Volumes/MATT_1/wfield/14-May-2024',
+    'path_to_session_data':       r"D:\wfield\14-May-2024",
     'pipe_num':           0,              # select desired pipeline number
     'get_raw_brightness': False,
     'get_DeltaF':         False,
@@ -19,6 +21,7 @@ params = {
 
 
 def main():
+    print(f"{datetime.datetime.now().time()}: Starting main.py")
     # given a path to a single session, retrieve all recordings
     session_recording_paths = get_recording_paths(params['path_to_session_data'])
     # create an obj for each recording within the session
@@ -28,7 +31,7 @@ def main():
         if n == 0:
             break
 
-    print('done loading things into object')
+    print(f'{datetime.datetime.now().time()}: Done loading session data into object')
 
     recordings[f'recording_0'].demo_pipeline()
 

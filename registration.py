@@ -145,7 +145,7 @@ def motion_correct(dat, out = None, chunksize=512, nreference = 60, mode = 'ecc'
         yshifts               : shitfs in y (NFRAMES, NCHANNELS)
         xshifts               : shifts in x
     '''
-    np.save("original_stack.npy", dat)
+    #np.save("original_stack.npy", dat)
 
     nframes,nchan,h,w = dat.shape
     if out is None:
@@ -181,7 +181,7 @@ def motion_correct(dat, out = None, chunksize=512, nreference = 60, mode = 'ecc'
         xshifts.append(xs)
         rshifts.append(rot)
 
-    np.save("registered_stack.npy", out)
-    return (np.vstack(yshifts),np.vstack(xshifts)),np.vstack(rshifts)
+    #np.save("registered_stack.npy", out)
+    return (np.vstack(yshifts),np.vstack(xshifts)),np.vstack(rshifts), out
 
 

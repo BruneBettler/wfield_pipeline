@@ -1,11 +1,12 @@
 '''
 Written by Brune
-Last Edit: Monday June 14 2024
+Last Edit: June 28 2024
 '''
 
 from data_loading_functions import *
 from registration import motion_correct
 from denoising import denoise_svd
+import datetime
 
 class rawDataPreprocessor:
     def __init__(self, path_to_folder):
@@ -39,14 +40,19 @@ class rawDataPreprocessor:
 
     def demo_pipeline(self):
         # 1. Motion correction / registration
-        #motion_corrected_frames_all = motion_correct(dat=self.all, out=None, mode='ecc', apply_shifts=True)
-        motion_corrected_frames_all = np.load("registered_stack.npy")
+        print(f'{datetime.datetime.now().time()}: Starting Motion Correction')
+        _, _, motion_corrected_frames_all = motion_correct(dat=self.all_frames, out=None, mode='ecc', apply_shifts=True)
+        #motion_corrected_frames_all = np.load("registered_stack.npy")
+        print(f'{datetime.datetime.now().time()}: Done Motion Correction')
 
         # 2. Denoising
-        denoised_frames_all = denoise_svd(motion_corrected_frames_all)
-        # 3. Segmentation
+        print(f'{datetime.datetime.now().time()}: Starting Denoising')
+        denoised_frames_all = denoise_svd(motion_corrected_frames_all[:,0,...]) # only denoise blue channel for now
+        print(f'{datetime.datetime.now().time()}: Done Denoising')
 
-        print("done registration")
+        # 3. Segmentation
+        #print(f'{datetime.datetime.now().time()}: Starting Segmentation')
+        return denoised_frames_all
 
         return 0
 

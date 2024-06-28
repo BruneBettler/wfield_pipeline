@@ -1,6 +1,6 @@
 """
 denoising.py contains all the functions necessary for denoising wfield data.
-"Denoising aims to isolate signal to boost signal to noise ratio".
+"Denoising aims to isolate signal to boost signal-to-noise ratio".
 """
 
 import numpy as np
@@ -9,6 +9,7 @@ from debug_visualize import frame_show
 import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
+from tqdm import tqdm
 
 
 def denoise_svd(im_array):
@@ -19,7 +20,7 @@ def denoise_svd(im_array):
     :return: np array containing stack of denoised 2D wfield images
     '''
     denoised_stack = []
-    for frame in im_array:
+    for frame in tqdm(im_array, desc="Denoising"):
         # Calculate U, S, and Vt
         #TODO try with both scipi and numpy and see which is better!
         #U, S, Vh = np.linalg.svd(im_array, full_matrices=False)
