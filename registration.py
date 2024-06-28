@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from  .utils import *
+from wfield_utils import *
 from skimage.transform import AffineTransform
 cv2.setNumThreads(1)
 
@@ -96,10 +96,7 @@ def registration_upsample(frame,template):
     dst = cv2.warpAffine(dst,M,(w, h))
     return (xs,ys),(np.clip(dst,0,(2**16-1))).astype('uint16')
 
-def _register_multichannel_stack(frames,templates,mode='2d',
-                                 niter = 25,
-                                 eps0 = 1e-3,
-                                 warp_mode = cv2.MOTION_EUCLIDEAN): # mode 2d
+def _register_multichannel_stack(frames,templates,mode='2d',niter = 25,eps0 = 1e-3,warp_mode = cv2.MOTION_EUCLIDEAN): # mode 2d
 
     nframes, nchannels, h, w = frames.shape     
     if mode == 'ecc':
@@ -148,9 +145,14 @@ def motion_correct(dat, out = None, chunksize=512, nreference = 60, mode = 'ecc'
         yshifts               : shitfs in y (NFRAMES, NCHANNELS)
         xshifts               : shifts in x
     '''
+    np.save("original_stack.npy", dat)
+
     nframes,nchan,h,w = dat.shape
     if out is None:
-        out = dat
+        out = dat  # overwrites the original input stack
+    #  TODO: else out contains the path of where we want the images to be copied / stores
+
+
     chunks = chunk_indices(nframes,chunksize)
     xshifts = []
     yshifts = []
@@ -172,15 +174,14 @@ def motion_correct(dat, out = None, chunksize=512, nreference = 60, mode = 'ecc'
         #if not mode == '2d' :
         #xs += xs0
         #ys += ys0
-        (xs,ys,rot),corrected = _register_multichannel_stack(
-            localchunk,
-            refs,
-            mode=mode)
+        (xs,ys,rot),corrected = _register_multichannel_stack(localchunk,refs,mode=mode)
         if apply_shifts:
             out[c[0]:c[-1]] = corrected[:]
         yshifts.append(ys)
         xshifts.append(xs)
         rshifts.append(rot)
+
+    np.save("registered_stack.npy", out)
     return (np.vstack(yshifts),np.vstack(xshifts)),np.vstack(rshifts)
 
 

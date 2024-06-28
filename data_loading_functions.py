@@ -1,18 +1,20 @@
 '''
 Written by Brune
-Last Edit: Monday June 03 2024
+Last Edit: Monday June 18 2024
 '''
 
 import os
 import numpy as np
-from pylab import *
+#from pylab import *
 import struct
 import scipy.io
+from struct import unpack
+
 
 def get_file_path(path_to_folder, file_type):
     '''
-    Helper function for __init__
-    file_type either "A" for analog, "F" for frames.dat, "T" for frameTimes.mat
+    Helper function for data_processor __init__
+    file_type either "A" for analog, "F" for frames.dat, or "T" for frameTimes.mat
     '''
     for _, _, files in os.walk(path_to_folder):
         for file_name in files:
@@ -27,9 +29,10 @@ def get_file_path(path_to_folder, file_type):
                 return file_path
     return 0
 
+# function below is from the churchland wfield code # TODO: find a way to better cite this?
 def load_dat_frames(filename, nframes=None, offset=0, shape=None, dtype='uint16'):
     '''
-    Loads frames from a binary file.
+    Loads image frames from a binary file.
 
     Inputs:
         filename (str)       : fileformat convention, file ends in _NCHANNELS_H_W_DTYPE.dat
@@ -65,6 +68,7 @@ def load_dat_frames(filename, nframes=None, offset=0, shape=None, dtype='uint16'
 
     return buf
 
+# function below is from the churchland wfield code # TODO: find a way to better cite this?
 def _parse_binary_fname(fname, lastidx=None, dtype='uint16', shape=None, sep='_'):
     '''
     Gets the data type and the shape from the filename
@@ -101,43 +105,27 @@ def _parse_binary_fname(fname, lastidx=None, dtype='uint16', shape=None, sep='_'
     return dtype, shape, fnum
 
 def load_dat_analog(file_path):
-    """
-    Convert a .dat file to a numpy ndarray\n
-    First we read the file header.
-    The first data [double] is representing the amount of data in the header
-    The second double is the time of acquisition onset on first run
-    The Third double is the number of recorded analog channels + timestamps
-    The Fourth or last double is the number of values to read (set to inf since absolute recording duration is unknown at this point)
+    """Convert a .dat file to a numpy ndarray\n
+        First we read the file header.
+        The first data [double] is representing the amount of data in the header
+        The second double is the time of acquisition onset on first run
+        The Third double is the number of recorded analog channels + timestamps
+        The Fourth or last double is the number of values to read (set to inf since absolute recording duration is unknown at this point)
 
-    After the Data is written as uint16
+        After the Data is written as uint16"""
+    with open(file_path,'rb') as fd:
+        tstamp = unpack("d", fd.read(8))[0]
+        onset = unpack("d", fd.read(8))[0]
+        nchannels = int(unpack("<d", fd.read(8))[0])
+        nsamples = unpack("<d", fd.read(8))[0]
+        dat = np.fromfile(fd,dtype='uint16')
+        dat = dat.reshape((-1,nchannels)).T
+    return dat,dict(baseline=tstamp,
+                    onset=onset,
+                    nchannels=nchannels,
+                    nsamples=nsamples)
 
-    """
-    DLB = 8
-    UILB = 2
-
-    with open(file_path, mode='rb') as file: #open the file as a binary file
-        data = file.read()
-    data_in_header = int(struct.unpack('d', data[:DLB])[0])                     #read the amount of the data in header
-    header = []
-    for i in range(DLB, DLB*data_in_header+1, DLB):                             # read the header
-        info = struct.unpack('d', data[i:i+DLB])[0]
-        header.append(info)
-    number_of_chanels = int(header[1])
-    # data_converted = []
-    # for i in range((data_in_header+1) * DLB, len(data), UILB*number_of_chanels):   #Read the Data chunks
-    #     buff = []
-    #     for j in range(number_of_chanels):                                         #Read by chanel
-    #         buff.append(struct.unpack('H', data[i+j*UILB:i+j*UILB+UILB])[0])
-    #     data_converted.append(buff)
-    # data_converted = numpy.array(data_converted)                                # Convert to ndarray
-    data_shape =(int((len(data)-(data_in_header+1) * DLB)/UILB/number_of_chanels), number_of_chanels)
-    data = data[(data_in_header+1) * DLB:]
-    deserialized = np.frombuffer(data, dtype=np.uint16)
-    reshaped = np.reshape(deserialized, newshape=data_shape)
-    # print(f"Identical: {numpy.all(data_converted == reshaped)}")
-    return reshaped
-
-def load_mat_frameTimes(file_path): #
+def load_mat_frameTimes(file_path):
     '''
     function returns a dictionary containing the file data in frameTimes.mat
         'removedFrames': single value
@@ -146,11 +134,10 @@ def load_mat_frameTimes(file_path): #
         'postStim':
         'imgSize': 1,4 array
     '''
-
     data = scipy.io.loadmat(file_path)
     return data
 
-
-
 if __name__ == "__main__":
+    test = load_dat_analog('/Volumes/MATT_1/wfield/wfield/Analog_1.dat')
+
     print("done")
