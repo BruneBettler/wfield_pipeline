@@ -50,7 +50,11 @@ class rawDataPreprocessor:
         denoised_frames_all = denoise_svd(motion_corrected_frames_all[:,0,...]) # only denoise blue channel for now
         print(f'{datetime.datetime.now().time()}: Done Denoising')
 
-        # 3. Segmentation
+        # 3. Hemocorrection
+        print(f'{datetime.datetime.now().time()}: Starting HemoCorrection')
+        
+                
+        # 4. Segmentation
         #print(f'{datetime.datetime.now().time()}: Starting Segmentation')
         return denoised_frames_all
 

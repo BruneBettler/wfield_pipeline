@@ -318,7 +318,6 @@ def contour_to_mask(x,y,dims,extent = None,n_up_samples = 2000):
 
 
 def parinit():
-    import os
     os.environ['MKL_NUM_THREADS'] = "1"
     os.environ['OMP_NUM_THREADS'] = "1"
 
