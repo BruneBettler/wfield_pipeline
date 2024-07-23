@@ -1,6 +1,8 @@
 '''
 Written by Brune
 Last Edit: Thursday June 06 2024
+Modified by Matthew
+Last Edit : 2024-07-23
 '''
 
 from multiprocessing import Pool, cpu_count
@@ -21,7 +23,17 @@ def get_recording_paths(session_path):
         for dir in dirnames:
             recording_paths.append(session_path+dir)
         return recording_paths
+    return 1
 
+def get_file_paths(recording_path):
+    # check if session_path ends with '/'
+    if recording_path[-1] != '\\':
+        recording_path += '\\'
+    file_paths = []
+    for dirpath, dirnames, filenames in os.walk(recording_path):
+        for file in filenames:
+            file_paths.append(recording_path+file)
+        return file_paths
     return 1
 
 def parinit():

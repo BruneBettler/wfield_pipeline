@@ -11,8 +11,14 @@ import datetime
 '''
 FILL OUT PARAMS DICTIONARY WITH DESIRED PREPROCESSING CHOICES
 '''
+# A session follows the following structure: 
+# Session_name/Recordings_from_that_sessions
+# Each recording has the .mat and .dat files for that recording
+# If we want to only analyse one recording place your recording into a folder
+# above it. 
+# TODO using get_file_paths modify the main to only analyse one recording.
 params = {
-    'path_to_session_data':       r"D:\wfield\14-May-2024",
+    'path_to_session_data':       r"C:\Users\evilm\Downloads\07-18-2024",
     'pipe_num':           0,              # select desired pipeline number
     'get_raw_brightness': False,
     'get_DeltaF':         False,
