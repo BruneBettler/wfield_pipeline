@@ -45,11 +45,15 @@ class rawDataPreprocessor:
         #motion_corrected_frames_all = np.load("registered_stack.npy")
         print(f'{datetime.datetime.now().time()}: Done Motion Correction')
 
-        # 2. Denoising
-        print(f'{datetime.datetime.now().time()}: Starting Denoising')
-        denoised_frames_all = denoise_svd(motion_corrected_frames_all[:,0,...]) # only denoise blue channel for now
-        print(f'{datetime.datetime.now().time()}: Done Denoising')
+        # 2. Denoising and Compression
+        print(f'{datetime.datetime.now().time()}: Starting  Blue Frames')
+        self.denoised_blue_frames = denoise_svd(motion_corrected_frames_all[:,0,...],rank=200) # only denoise blue channel for now
+        print(f'{datetime.datetime.now().time()}: Done Denoising Blue Frames')
 
+        print(f'{datetime.datetime.now().time()}: Starting  Violet Frames')
+        self.denoised_violet_frames = denoise_svd(motion_corrected_frames_all[:,1,...],rank=200) # only denoise blue channel for now
+        print(f'{datetime.datetime.now().time()}: Done Denoising Violet Frames')
+        
         # 3. Hemocorrection
         print(f'{datetime.datetime.now().time()}: Starting HemoCorrection')
         

@@ -1,6 +1,9 @@
 """
 denoising.py contains all the functions necessary for denoising wfield data.
 "Denoising aims to isolate signal to boost signal-to-noise ratio".
+
+Written by Brune Bettler
+and Matthew Loukine
 """
 
 import numpy as np
@@ -12,7 +15,7 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 
 
-def denoise_svd(im_array):
+def denoise_svd(im_array, rank):
     '''
     Single value decomposition
 
@@ -20,22 +23,27 @@ def denoise_svd(im_array):
     :return: np array containing stack of denoised 2D wfield images
     '''
     denoised_stack = []
-    for frame in tqdm(im_array, desc="Denoising"):
+    SVD_stack = []
+    for i, frame in tqdm(enumerate(im_array), desc="Denoising"):
         # Calculate U, S, and Vt
-        #TODO try with both scipi and numpy and see which is better!
-        #U, S, Vh = np.linalg.svd(im_array, full_matrices=False)
-        U,S,Vh = scipy.linalg.svd(frame, full_matrices=False)
-
-
+        U, S, VT = np.linalg.svd(frame, full_matrices=False)
+        #print(U.shape)
+        #print(S.shape)
+        #print(VT.shape)
+        '''Lines 27-32 from Brune'''
         # Remove sigma values below threshold (250)
-        S_clean = np.array([Si if Si > 1000 else 0 for Si in S])
+        #S_clean = np.array([Si if Si > 1000 else 0 for Si in S])
 
         # Calculate A' = U * S_clean * V
-        denoised_frame = np.array(np.dot((U * S_clean), Vh))
+        #denoised_frame = np.array(np.dot((U * S_clean), Vh))
 
-        denoised_stack.append(denoised_frame)
+        #Only using the components from rank <= to reconstruct image
+        S = np.diag(S)
+        denoised_frame = U[:,:rank] @ S[0:rank,:rank] @ VT[:rank,:]
+        im_array[i] = denoised_frame
+        SVD_stack.append([U[:,:rank],S[0:rank,:rank],VT[:rank,:]])
 
-    return np.array(denoised_stack)
+    return (np.array(im_array),np,array(SVD_stack))
 
 '''
 Penalized matrix decomposition 
