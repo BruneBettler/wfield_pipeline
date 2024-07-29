@@ -6,6 +6,7 @@ top is from the Churchland Lab.
 Author : Matthew Loukine
 Last Update : 2024-07-29
 '''
+#################################################################################################################
 #  wfield - tools to analyse widefield data - hemodynamics correction 
 # Copyright (C) 2020 Joao Couto - jpcouto@gmail.com
 #
@@ -95,3 +96,10 @@ def hemodynamic_correction(U, SVT_470,SVT_405,
     U = U.reshape(dims)
     
     return SVTcorr.astype('float32'), rcoeffs.astype('float32').reshape(dims[:2]), T.astype('float32')
+#################################################################################################################
+def hemocorrection(blue_frames, violet_frames):
+    return
+
+if __name__ == "__main__":
+    print()
+#################################################################################################################
