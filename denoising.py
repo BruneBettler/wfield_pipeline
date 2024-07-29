@@ -43,7 +43,7 @@ def denoise_svd(im_array, rank):
         im_array[i] = denoised_frame
         SVD_stack.append([U[:,:rank],S[0:rank,:rank],VT[:rank,:]])
 
-    return (np.array(im_array),np,array(SVD_stack))
+    return (np.array(im_array),np.array(SVD_stack))
 
 '''
 Penalized matrix decomposition 
