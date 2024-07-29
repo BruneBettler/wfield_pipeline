@@ -1,3 +1,11 @@
+'''
+The following py file has both Churchland and Trenholm
+hemodynamic correction pipelines. The block at the
+top is from the Churchland Lab.  
+
+Author : Matthew Loukine
+Last Update : 2024-07-29
+'''
 #  wfield - tools to analyse widefield data - hemodynamics correction 
 # Copyright (C) 2020 Joao Couto - jpcouto@gmail.com
 #
@@ -23,7 +31,6 @@ import numpy as np
 # U comes from U.npy
 # SVTa is SVT.npy for 470 light wavelength
 # SVTb is SVT.npy for 405 light wavelength
-
 
 def _hemodynamic_find_coeffs(U,SVTa,SVTb):
     a = np.dot(U,SVTa)
