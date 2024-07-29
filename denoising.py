@@ -20,9 +20,7 @@ def denoise_svd(im_array, rank):
     Single value decomposition
 
     :param im_array: np array containing stack of 2D wfield images
-    :return: np array containing stack of denoised 2D wfield images
     '''
-    denoised_stack = []
     SVD_stack = []
     for i, frame in tqdm(enumerate(im_array), desc="Denoising"):
         # Calculate U, S, and Vt

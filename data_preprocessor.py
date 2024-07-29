@@ -41,20 +41,26 @@ class rawDataPreprocessor:
     def demo_pipeline(self):
         # 1. Motion correction / registration
         print(f'{datetime.datetime.now().time()}: Starting Motion Correction')
-        _, _, motion_corrected_frames_all = motion_correct(dat=self.all_frames, out=None, mode='ecc', apply_shifts=True)
+        _, _, self.motion_corrected_frames_all = motion_correct(dat=self.all_frames, out=None, mode='ecc', apply_shifts=True)
         #motion_corrected_frames_all = np.load("registered_stack.npy")
         print(f'{datetime.datetime.now().time()}: Done Motion Correction')
 
-        # 2. Denoising and Compression
-        print(f'{datetime.datetime.now().time()}: Starting  Blue Frames')
-        self.denoised_blue_frames = denoise_svd(motion_corrected_frames_all[:,0,...],rank=200) # only denoise blue channel for now
-        print(f'{datetime.datetime.now().time()}: Done Denoising Blue Frames')
+        # The step is not needed as the data is low resolution,
+        # noise should be reduced out, and compression is not needed, as data is not large.
+        # In the future, important to remember this step and consider it!
 
-        print(f'{datetime.datetime.now().time()}: Starting  Violet Frames')
-        self.denoised_violet_frames = denoise_svd(motion_corrected_frames_all[:,1,...],rank=200) # only denoise blue channel for now
-        print(f'{datetime.datetime.now().time()}: Done Denoising Violet Frames')
+        # 2. Denoising and Compression
+        # print(f'{datetime.datetime.now().time()}: Starting  Blue Frames')
+        # self.denoised_blue_frames, self.blue_SVD_stack = denoise_svd(motion_corrected_frames_all[:,0,...],rank=200) # only denoise blue channel for now
+        # print(f'{datetime.datetime.now().time()}: Done Denoising Blue Frames')
+
+        # print(f'{datetime.datetime.now().time()}: Starting  Violet Frames')
+        # self.denoised_violet_frames, self.violet_SVD_stack = denoise_svd(motion_corrected_frames_all[:,1,...],rank=200) # only denoise blue channel for now
+        # print(f'{datetime.datetime.now().time()}: Done Denoising Violet Frames')
         
-        # 3. Hemocorrection
+        # 3. Hemocorrection 
+        # This step is not the hemocorrection done by Churchland lab, but is
+        # a simpler verision. 
         print(f'{datetime.datetime.now().time()}: Starting HemoCorrection')
         
                 
