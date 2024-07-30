@@ -98,6 +98,16 @@ def hemodynamic_correction(U, SVT_470,SVT_405,
     return SVTcorr.astype('float32'), rcoeffs.astype('float32').reshape(dims[:2]), T.astype('float32')
 #################################################################################################################
 def hemocorrection(blue_frames, violet_frames):
+    # Normalising every frame.
+    blue_frames = [(frame-np.min(frame))/(np.max(frame)-np.min(frame)) for frame in blue_frames]    
+    violet_frames = [(frame-np.min(frame))/(np.max(frame)-np.min(frame)) for frame in violet_frames]    
+
+    # Mean Correction
+
+    # Subtracting
+    for i in range(len(blue_frames)):
+        blue_frames[i] = blue_frames[i] - violet_frames[i]
+    
     return
 
 if __name__ == "__main__":

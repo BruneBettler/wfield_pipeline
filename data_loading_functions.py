@@ -1,6 +1,9 @@
 '''
 Written by Brune
 Last Edit: Monday June 18 2024
+
+Edited by Matthew Loukine
+Last Edit: 2024-07-30
 '''
 
 import os
@@ -25,6 +28,9 @@ def get_file_path(path_to_folder, file_type):
                 file_path = path_to_folder + file_name
                 return file_path
             if file_type == 'T' and file_name[:10] == 'frameTimes' and file_name[-4:] == '.mat':
+                file_path = path_to_folder + file_name
+                return file_path
+            if file_type == 'M' and file_name[:4] == 'data' and file_name[-4:] == '.mat':
                 file_path = path_to_folder + file_name
                 return file_path
     return 0
