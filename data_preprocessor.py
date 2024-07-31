@@ -29,49 +29,49 @@ class rawDataPreprocessor:
 
         self.all_frames = load_dat_frames(filename=self.path_to_frame_data)
         
-        self.blue_frames = self.all_frames[:, 0, ...] # blue frame occurs first
-        self.violet_frames = self.all_frames[:, 1, ...]
+        # self.blue_frames = self.all_frames[:, 0, ...] # blue frame occurs first
+        # self.violet_frames = self.all_frames[:, 1, ...]
 
-        # TODO: add code to take care of the analog coordination things current i'm just doing the frame data
+        # # TODO: add code to take care of the analog coordination things current i'm just doing the frame data
 
-        self.analog_data = load_dat_analog(self.path_to_analog)
-        self.frame_times = load_mat_frameTimes(self.path_to_frameTimes)
+        # self.analog_data = load_dat_analog(self.path_to_analog)
+        # self.frame_times = load_mat_frameTimes(self.path_to_frameTimes)
 
-        self.blue_ftimes = self.frame_times['frameTimes'][::2] # blue frame occurs first
-        self.violet_ftimes = self.frame_times['frameTimes'][1::2]
+        # self.blue_ftimes = self.frame_times['frameTimes'][::2] # blue frame occurs first
+        # self.violet_ftimes = self.frame_times['frameTimes'][1::2]
 
-        # the following parameteres are for visualization / ... # TODO: write here more info on what's going on
-        self.verbose = True  # change to False if you do not want printed updates as the code runs
+        # # the following parameteres are for visualization / ... # TODO: write here more info on what's going on
+        # self.verbose = True  # change to False if you do not want printed updates as the code runs
 
-        # The following is added for olfactometer data
-        if olfactomter:
-            '''
-            The olfactometer data found on the olfactometer computer is put into a .mat file. There is also an hd5 file.
-            Here we use a .mat file. The .mat file contains either dictionaries in bit form, or arrays. The .mat file 
-            has the following dicionaries : configs, experiment_start_timestamp, parameters, software_envrionment,
-            stimulus_frame_info, stimulus_frame_info_text, use_data. It has the following arrays sync (double). sync_sc is
-            16 bit, and sync_scaling a struct.
+        # # The following is added for olfactometer data
+        # if olfactomter:
+        #     '''
+        #     The olfactometer data found on the olfactometer computer is put into a .mat file. There is also an hd5 file.
+        #     Here we use a .mat file. The .mat file contains either dictionaries in bit form, or arrays. The .mat file 
+        #     has the following dicionaries : configs, experiment_start_timestamp, parameters, software_envrionment,
+        #     stimulus_frame_info, stimulus_frame_info_text, use_data. It has the following arrays sync (double). sync_sc is
+        #     16 bit, and sync_scaling a struct.
 
-            configs - has the configuration for the experiment, such as stimulus duration, post and pre delays. etc.
-            experiment_start_timestamp - the global computer time the experiment started
-            parameters - has the computers paramters for the experiment
-            software_environement - has information about the software for Acquisition
-            stimulus_frame_info - contains start and end time of stimulus onset
-            stimulus_frame_info_text - contains the same information as above
-            sync - contains TTL information. [0] - time, [1] TTL odor pulses, [2] ____ ,[3] start time, [4] end time,
-            sync_sc (same information)
-            sync_scaling - scaling sync to sync_sc
-            user_data - Can contain extra information from the aquistion software. Currently says which order is being shown in the order. 
+        #     configs - has the configuration for the experiment, such as stimulus duration, post and pre delays. etc.
+        #     experiment_start_timestamp - the global computer time the experiment started
+        #     parameters - has the computers paramters for the experiment
+        #     software_environement - has information about the software for Acquisition
+        #     stimulus_frame_info - contains start and end time of stimulus onset
+        #     stimulus_frame_info_text - contains the same information as above
+        #     sync - contains TTL information. [0] - time, [1] TTL odor pulses, [2] ____ ,[3] start time, [4] end time,
+        #     sync_sc (same information)
+        #     sync_scaling - scaling sync to sync_sc
+        #     user_data - Can contain extra information from the aquistion software. Currently says which order is being shown in the order. 
 
-            The code below does not get all the data out of the mat file, only the most important parts. Note for dictionaries, we must use pickle.loads()
-            after getting the mat file loaded. Rather the arrays only use scipy.io.loadmat(path)['name']
-            '''
-            # TODO : put the following into its own function.
-            self.olfac_experiment_start_timestamp = pickle.loads(scipy.io.loadmat(self.path_to_olfacdata)['experiment_start_timestamp'].tostring())
-            self.olfac_stim_frame_info = pickle.loads(scipy.io.loadmat(self.path_to_olfacdata)['stimulus_frame_info'].tostring())
-            self.olfac_user_data = pickle.loads(scipy.io.loadmat(self.path_to_olfacdata)['user_data'].tostring())
+        #     The code below does not get all the data out of the mat file, only the most important parts. Note for dictionaries, we must use pickle.loads()
+        #     after getting the mat file loaded. Rather the arrays only use scipy.io.loadmat(path)['name']
+        #     '''
+        #     # TODO : put the following into its own function.
+        #     self.olfac_experiment_start_timestamp = pickle.loads(scipy.io.loadmat(self.path_to_olfacdata)['experiment_start_timestamp'].tostring())
+        #     self.olfac_stim_frame_info = pickle.loads(scipy.io.loadmat(self.path_to_olfacdata)['stimulus_frame_info'].tostring())
+        #     self.olfac_user_data = pickle.loads(scipy.io.loadmat(self.path_to_olfacdata)['user_data'].tostring())
 
-            self.olfac_sync = scipy.io.loadmat(self.path_to_olfacdata)['sync']
+        #     self.olfac_sync = scipy.io.loadmat(self.path_to_olfacdata)['sync']
 
 
     def demo_pipeline(self):
