@@ -1,14 +1,9 @@
-import mesonet
 
-"path to input folder format: r'C:\..."
-input_file = ...
+if __name__ == "__main__":
+    import mesonet
 
-"path to output folder"
-output_file = ...
+    print("done importing mesonet")
 
-
-if "__name__" == "__main__":
-    print("hey")
     """config_file = mesonet.config_project(input_file, output_file, 'test')
 
     mesonet.predict_regions(config_file)
