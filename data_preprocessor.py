@@ -11,7 +11,7 @@ import pickle
 import scipy.io
 
 class rawDataPreprocessor:
-    def __init__(self, path_to_folder, olfactomter=True):
+    def __init__(self, path_to_folder, blue_and_violet_exists=True, stim_computer=True):
         '''
         Initializes a rawDataPreprocessor object given the path to a folder containing the following items for a single imaging session:
         Analog_1.dat, Frames_..._uint16_....dat, frameTimes_....mat, handles.mat (these 4 files minimum)
@@ -24,27 +24,29 @@ class rawDataPreprocessor:
         self.path_to_frameTimes = get_file_path(path_to_folder, 'T')
 
         # The following is added for olfactometer data
-        if olfactomter:
-            self.path_to_olfacdata = get_file_path(path_to_folder, 'M')
+        if stim_computer:
+            self.path_to_stimcomputer = get_file_path(path_to_folder, 'M')
 
         self.all_frames = load_dat_frames(filename=self.path_to_frame_data)
         
-        # self.blue_frames = self.all_frames[:, 0, ...] # blue frame occurs first
-        # self.violet_frames = self.all_frames[:, 1, ...]
+        if blue_and_violet_exists:
+            self.blue_frames = self.all_frames[:, 0, ...] # blue frame occurs first
+            self.violet_frames = self.all_frames[:, 1, ...]
 
         # # TODO: add code to take care of the analog coordination things current i'm just doing the frame data
 
-        # self.analog_data = load_dat_analog(self.path_to_analog)
-        # self.frame_times = load_mat_frameTimes(self.path_to_frameTimes)
+        self.analog_data = load_dat_analog(self.path_to_analog)
+        self.frame_times = load_mat_frameTimes(self.path_to_frameTimes)
 
-        # self.blue_ftimes = self.frame_times['frameTimes'][::2] # blue frame occurs first
-        # self.violet_ftimes = self.frame_times['frameTimes'][1::2]
+        if blue_and_violet_exists:
+            self.blue_ftimes = self.frame_times['frameTimes'][::2] # blue frame occurs first
+            self.violet_ftimes = self.frame_times['frameTimes'][1::2]
 
-        # # the following parameteres are for visualization / ... # TODO: write here more info on what's going on
-        # self.verbose = True  # change to False if you do not want printed updates as the code runs
+        # the following parameteres are for visualization / ... # TODO: write here more info on what's going on
+        self.verbose = True  # change to False if you do not want printed updates as the code runs
 
         # # The following is added for olfactometer data
-        # if olfactomter:
+        # if stim_computer:
         #     '''
         #     The olfactometer data found on the olfactometer computer is put into a .mat file. There is also an hd5 file.
         #     Here we use a .mat file. The .mat file contains either dictionaries in bit form, or arrays. The .mat file 

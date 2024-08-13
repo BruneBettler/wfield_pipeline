@@ -22,7 +22,7 @@ def denoise_svd(im_array, rank):
     :param im_array: np array containing stack of 2D wfield images
     '''
     SVD_stack = []
-    for i, frame in tqdm(enumerate(im_array), desc="Denoising"):
+    for i, frame in enumerate(tqdm(im_array, desc="Denoising")):
         # Calculate U, S, and Vt
         U, S, VT = np.linalg.svd(frame, full_matrices=False)
         #print(U.shape)
