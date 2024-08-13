@@ -6,6 +6,7 @@ Last Edit: June 28 2024
 from data_loading_functions import *
 from registration import motion_correct
 from denoising import denoise_svd
+from hemocorrection import hemocorrection
 import datetime
 import pickle
 import scipy.io
@@ -88,18 +89,19 @@ class rawDataPreprocessor:
         # In the future, important to remember this step and consider it!
 
         # 2. Denoising and Compression
-        # print(f'{datetime.datetime.now().time()}: Starting  Blue Frames')
-        # self.denoised_blue_frames, self.blue_SVD_stack = denoise_svd(motion_corrected_frames_all[:,0,...],rank=200) # only denoise blue channel for now
-        # print(f'{datetime.datetime.now().time()}: Done Denoising Blue Frames')
-
-        # print(f'{datetime.datetime.now().time()}: Starting  Violet Frames')
-        # self.denoised_violet_frames, self.violet_SVD_stack = denoise_svd(motion_corrected_frames_all[:,1,...],rank=200) # only denoise blue channel for now
-        # print(f'{datetime.datetime.now().time()}: Done Denoising Violet Frames')
+        print(f'{datetime.datetime.now().time()}: Starting  Blue Frames Denoising and Compression')
+        self.denoised_blue_frames, _ = denoise_svd(motion_corrected_frames_all[:,0,...],rank=200)
+        print(f'{datetime.datetime.now().time()}: Done Denoising Blue Frames')
+        print(f'{datetime.datetime.now().time()}: Starting  Violet Frames Denoising and Compression')
+        self.denoised_violet_frames, _ = denoise_svd(motion_corrected_frames_all[:,1,...],rank=200)
+        print(f'{datetime.datetime.now().time()}: Done Denoising Violet Frames')
         
         # 3. Hemocorrection 
         # This step is not the hemocorrection done by Churchland lab, but is
         # a simpler verision. 
         print(f'{datetime.datetime.now().time()}: Starting HemoCorrection')
+        self.hemo_corr_frames = hemocorrection(blue_frames=self.denoised_blue_frames, violet_frames=self.denoised_violet_frames)
+        print(f'{datetime.datetime.now().time()}: Done HemoCorrection')
         
                 
         # 4. Segmentation
