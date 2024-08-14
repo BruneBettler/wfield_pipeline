@@ -1,0 +1,65 @@
+Nicole files used for the training of a new U-net model. 
+
+00: blind_gcamp
+	- 5604_gnat_notrestored
+		- LED_left_530_ND0_FW1 (20-Feb-2024)
+
+01: blind_rd1
+	- LED_430_R_F0.05_ND0_FW1 (28-May-2024)
+
+02-10: rd1thy1
+	- 5985
+		- LED_430_R_F0.05_ND0_FW1 (13-Jun-2024)
+		- LED_470_R_F0.05_ND5_FW6 (12-Jun-2024)
+	- 6286
+		- LED_530_R_F0.05_ND0_FW1 (26-Jun-2024)
+	- 6295
+		- LED_365_R_F0.05_ND0_FW1 (30-Jul-2024)
+		- LED_470_R_F0.05_ND2_FW3 (23-Jul-2024)
+	- 6325
+		- LED_365_R_F0.05_ND0_FW1 (29-Jul-2024)
+		- LED_617_R_F0.25_ND2_FW3 (24-Jul-2024) 
+	- 6361
+		- LED_530_R_F0.05_ND1_FW2 (25-Jun-2024)
+		- Li_LED_470_R_F0.1_ND3_FW4 (27-Jun-2024)
+
+11-16: restored_mice
+	- 5158
+		- LED_430_ND0_fw1 (12-Dec-2023)
+	- 5159
+		- led_430_nd0_FW1 (14-Dec-2023)
+	- 5297
+		- LED_left_530_ND0_FW1 (21-Feb-2024)
+	- 5298
+		- LED_L_530_ND0_FW1 (06-Feb-2024)
+	- 5400
+		- LED_left_530_ND0_FW1 (21-Feb-2024)
+	- 5401
+		- LED_L_ND0_FW1 (06-Feb-2024)
+
+17-19: wild_type
+	- 5253
+		- LED_430_R_F0.05_ND0_FW1 (14-May-2024)
+		- LED_530_R_F0.25_ND5_FW6 (15-May-2024)
+	- 5254
+		- LED_430_R_F0.05_ND0_FW1 (10-May-2024)
+
+20-24: wildtype_GCaMP_wdf
+	- 5187
+		- LED
+			- (07-Dec-2023)  frames_2
+	- 5188
+		- LED
+			- (07-Dec-2023) frames_1
+	- 5191
+		- LED
+			- (07-Dec-2023) frames_2(1)
+	- WT_1
+		- LED
+			- 01-Sep-2023 frames_2(2)
+			- 12-Sep-2023 frames_2(3)
+
+
+25: Matthew files used for the training of the new U-net model
+	- THY-GACMP6 Mice 
+		- 07-29-2024 (03) 
