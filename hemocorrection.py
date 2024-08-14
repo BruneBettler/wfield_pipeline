@@ -105,10 +105,10 @@ def hemocorrection(blue_frames, violet_frames):
     # Mean Correction
 
     # Subtracting
-    for i in range(len(blue_frames)):
+    for i in tqdm(range(len(blue_frames))):
         blue_frames[i] = blue_frames[i] - violet_frames[i]
     
-    return
+    return blue_frames
 
 if __name__ == "__main__":
     print()
